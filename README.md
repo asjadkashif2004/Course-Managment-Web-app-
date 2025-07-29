@@ -107,17 +107,3 @@ This project is open-source and available under the [MIT License](LICENSE).
 **M. Asjad Kashif**
 Student at NUST | Full Stack Developer
 
-```
-
----
-
-### ✅ Next Step:
-
-- Replace:
-  - `YOUR-USERNAME` with your GitHub username
-  - `your_db_name` and other placeholders with your actual values
-  - Add screenshots if you like in a `screenshots/` folder
-  - Add your license file (`LICENSE`)
-
-Let me know if you'd like a version for **Render deployment** with database instructions too.
-```
