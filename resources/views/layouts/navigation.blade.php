@@ -1,19 +1,21 @@
 <style>
     nav {
         font-family: 'Segoe UI', sans-serif;
-        background: #fdfdfd;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        background: #ffffff;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+        position: sticky;
+        top: 0;
+        z-index: 50;
     }
 
-    .navbar-links a {
-        padding: 8px 12px;
-        border-radius: 6px;
-        transition: all 0.3s ease;
-    }
-
-    .navbar-links a:hover {
-        background-color: #f0f4ff;
-        color: #2563eb;
+    .navbar-container {
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 0 20px;
+        height: 64px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
     }
 
     .logo-img {
@@ -22,97 +24,159 @@
     }
 
     .navbar-links {
-        gap: 30px; /* Spacing between Dashboard and Courses */
         display: flex;
+        gap: 32px;
         align-items: center;
+        font-weight: 500;
     }
 
-    .space-between-logo-nav {
-        margin-left: 20px;
+    .navbar-links a {
+        color: #374151;
+        padding: 8px 12px;
+        border-radius: 6px;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+
+    .navbar-links a:hover,
+    .navbar-links a.active {
+        background-color: #f0f4ff;
+        color: #1d4ed8;
+    }
+
+    .user-menu {
+        position: relative;
+    }
+
+    .user-button {
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: #4b5563;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 14px;
+    }
+
+    .user-button:hover {
+        color: #1f2937;
+    }
+
+    .user-button svg {
+        transition: transform 0.3s ease;
+    }
+
+    .user-menu[open] svg {
+        transform: rotate(180deg);
+    }
+
+    .user-dropdown {
+        position: absolute;
+        top: 120%;
+        right: 0;
+        background: white;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        min-width: 150px;
+        padding: 10px 0;
+        z-index: 100;
+    }
+
+    .user-dropdown a {
+        display: block;
+        padding: 10px 16px;
+        text-decoration: none;
+        color: #374151;
+        transition: background-color 0.2s ease;
+        font-size: 14px;
+    }
+
+    .user-dropdown a:hover {
+        background-color: #f3f4f6;
+    }
+
+    /* Mobile */
+    .mobile-toggle {
+        display: none;
+        background: none;
+        border: none;
+    }
+
+    @media (max-width: 768px) {
+        .navbar-links,
+        .user-menu {
+            display: none;
+        }
+
+        .mobile-toggle {
+            display: block;
+        }
+
+        .mobile-menu {
+            display: none;
+            background-color: #ffffff;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .mobile-menu.active {
+            display: block;
+        }
+
+        .mobile-menu a {
+            display: block;
+            padding: 12px 20px;
+            text-decoration: none;
+            color: #374151;
+            font-weight: 500;
+        }
+
+        .mobile-menu a:hover {
+            background-color: #f0f4ff;
+        }
     }
 </style>
 
-<nav x-data="{ open: false }" class="bg-white shadow-md border-b border-gray-200">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between h-16 items-center">
-            <!-- Logo Area -->
-            <div class="flex items-center">
-                <!-- Logo -->
-                <a href="{{ route('dashboard') }}">
-                    <img src="https://www.freeiconspng.com/uploads/courses-icon-12.png" alt="Logo" class="logo-img">
-                </a>
+<nav>
+    <div class="navbar-container">
+        <!-- Logo -->
+        <a href="{{ route('dashboard') }}">
+            <img src="https://www.freeiconspng.com/uploads/courses-icon-12.png" alt="Logo" class="logo-img">
+        </a>
 
-                <!-- Navigation Links -->
-                <div class="hidden sm:flex space-between-logo-nav navbar-links text-sm font-semibold text-gray-700">
-                    <a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard') ? 'text-blue-600' : 'hover:text-blue-500' }}">
-                        Dashboard
-                    </a>
-                    <a href="{{ route('courses.index') }}" class="{{ request()->routeIs('courses.index') ? 'text-blue-600' : 'hover:text-blue-500' }}">
-                        Courses
-                    </a>
-                </div>
-            </div>
-
-            <!-- Right Side - Dropdown -->
-            <div class="hidden sm:flex items-center space-x-4">
-                <x-dropdown align="right" width="48">
-                    <x-slot name="trigger">
-                        <button class="flex items-center text-sm font-medium text-gray-600 hover:text-gray-800">
-                            <span>{{ Auth::user()->name }}</span>
-                            <svg class="ml-2 h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-                            </svg>
-                        </button>
-                    </x-slot>
-
-                        <x-slot name="content">
-                            <x-dropdown-link :href="route('profile.edit')">Profile</x-dropdown-link>
-
-                            <form method="POST" action="{{ route('logout') }}">
-                                @csrf
-                                <x-dropdown-link href="{{ route('logout') }}"
-                                    onclick="event.preventDefault(); this.closest('form').submit();">
-                                    Log Out
-                                </x-dropdown-link>
-                            </form>
-                    </x-slot>
-                </x-dropdown>
-            </div>
-
-            <!-- Hamburger Menu (Mobile) -->
-            <div class="sm:hidden">
-                <button @click="open = ! open" class="p-2 rounded-md text-gray-600 hover:text-gray-900 focus:outline-none focus:bg-gray-100">
-                    <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                        <path :class="{ 'hidden': open, 'inline-flex': !open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                              d="M4 6h16M4 12h16M4 18h16"/>
-                        <path :class="{ 'hidden': !open, 'inline-flex': open }" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                              d="M6 18L18 6M6 6l12 12"/>
-                    </svg>
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Mobile Menu -->
-    <div :class="{ 'block': open, 'hidden': ! open }" class="sm:hidden">
-        <div class="px-4 pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">Dashboard</x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('courses.index')" :active="request()->routeIs('courses.index')">Courses</x-responsive-nav-link>
+        <!-- Navigation Links -->
+        <div class="navbar-links">
+            <a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">🏠 Dashboard</a>
+            <a href="{{ route('courses.index') }}" class="{{ request()->routeIs('courses.index') ? 'active' : '' }}">📚 Courses</a>
         </div>
 
-        <div class="pt-4 pb-1 border-t border-gray-200">
-            <div class="px-4">
-                <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
-                <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
-            </div>
-            <div class="mt-3 space-y-1">
-                <x-responsive-nav-link :href="route('profile.edit')">Profile</x-responsive-nav-link>
+        <!-- User Dropdown -->
+        <details class="user-menu">
+            <summary class="user-button">
+                👤 {{ Auth::user()->name }}
+                <svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.23 8.29a.75.75 0 01.02-1.08z" clip-rule="evenodd" />
+                </svg>
+            </summary>
+            <div class="user-dropdown">
+                <a href="{{ route('profile.edit') }}">Profile</a>
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
-                    <x-responsive-nav-link href="{{ route('logout') }}"
-                        onclick="event.preventDefault(); this.closest('form').submit();">Log Out</x-responsive-nav-link>
+                    <a href="{{ route('logout') }}" onclick="event.preventDefault(); this.closest('form').submit();">Log Out</a>
                 </form>
             </div>
-        </div>
+        </details>
+
+        <!-- Mobile Toggle -->
+        <button class="mobile-toggle" onclick="document.querySelector('.mobile-menu').classList.toggle('active')">
+            <svg class="h-6 w-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M4 6h16M4 12h16M4 18h16"/>
+            </svg>
+        </button>
     </div>
-</nav>
+
+    </nav>
+

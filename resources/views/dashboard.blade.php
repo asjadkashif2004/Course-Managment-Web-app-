@@ -1,68 +1,140 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-2xl text-gray-900 leading-tight tracking-wide">
+        <h2 class="dashboard-title">
             {{ __('Dashboard') }}
         </h2>
     </x-slot>
 
-    <!-- Custom UI Enhancements -->
     <style>
-        h2 {
-            letter-spacing: 0.5px;
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .dashboard-title {
+            font-size: 28px;
+            font-weight: bold;
+            color: #333;
+            padding: 20px;
+            border-bottom: 2px solid #eee;
+            background-color: #f8fafc;
+        }
+        .container-dashboard {
+            display: flex;
+            min-height: 100vh;
+        }
+        .sidebar {
+            width: 220px;
+            background-color: #2d3748;
+            color: #fff;
+            padding: 20px;
+        }
+        .sidebar h3 {
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+        .sidebar a {
+            display: block;
+            color: #cbd5e0;
+            text-decoration: none;
+            margin-bottom: 12px;
+            padding: 8px 10px;
+            border-radius: 6px;
+            transition: background 0.3s;
+        }
+        .sidebar a:hover {
+            background-color: #4a5568;
+            color: #fff;
+        }
+        .content {
+            flex: 1;
+            padding: 30px;
+            background-color: #f1f5f9;
+        }
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
         }
         .course-card {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            background-color: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 20px;
+            transition: box-shadow 0.3s ease, transform 0.3s ease;
         }
         .course-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+            transform: translateY(-5px);
         }
         .course-title {
+            font-size: 20px;
+            font-weight: 600;
             color: #1a202c;
+            margin-bottom: 8px;
+        }
+        .course-desc {
+            color: #4a5568;
+            margin-bottom: 10px;
         }
         .course-price {
-            color: #047857;
-        }
-        .dashboard-heading {
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
+            color: #059669;
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 10px;
         }
         .view-link {
             color: #2563eb;
+            text-decoration: none;
             font-weight: 500;
         }
         .view-link:hover {
             text-decoration: underline;
-            color: #1d4ed8;
+        }
+
+        @media (max-width: 768px) {
+            .container-dashboard {
+                flex-direction: column;
+            }
+            .sidebar {
+                width: 100%;
+                text-align: center;
+            }
         }
     </style>
 
-    <div class="py-12 bg-gray-50 min-h-screen">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <!-- Welcome Message -->
-            
-            <!-- Courses Section -->
-            <div class="bg-white overflow-hidden shadow-md sm:rounded-lg">
-                <div class="p-6 text-gray-900">
-                    <h3 class="dashboard-heading">📚 Available Courses</h3>
+    <div class="container-dashboard">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <h3>📂 Menu</h3>
+            <a href="{{ url('/dashboard') }}">🏠 Dashboard</a>
+            <a href="{{ url('/courses') }}">📚 Courses</a>
+            <a href="#">📝 Enrollments</a>
+            <a href="{{ route('logout') }}"
+               onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                🚪 Logout
+            </a>
+            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                @csrf
+            </form>
+        </div>
 
-                    @if ($courses->isEmpty())
-                        <p class="text-gray-500">No courses available.</p>
-                    @else
-                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                            @foreach ($courses as $course)
-                                <div class="course-card border rounded-lg p-5 bg-white shadow-sm">
-                                    <h4 class="text-xl font-semibold mb-2 course-title">{{ $course->title }}</h4>
-                                    <p class="text-gray-700 mb-2">{{ Str::limit($course->description, 100) }}</p>
-                                    <p class="text-lg font-semibold mb-2 course-price">Rs {{ $course->price }}</p>
-                                    <a href="{{ url('/courses/' . $course->id) }}" class="view-link">View Details</a>
-                                </div>
-                            @endforeach
+        <!-- Main Content -->
+        <div class="content">
+            <h3 style="font-size: 24px; font-weight: 600; margin-bottom: 20px;">📚 Available Courses</h3>
+
+            @if ($courses->isEmpty())
+                <p style="color: #6b7280;">No courses available.</p>
+            @else
+                <div class="courses-grid">
+                    @foreach ($courses as $course)
+                        <div class="course-card">
+                            <div class="course-title">{{ $course->title }}</div>
+                            <div class="course-desc">{{ Str::limit($course->description, 100) }}</div>
+                            <div class="course-price">Rs {{ $course->price }}</div>
+                            <a href="{{ url('/courses/' . $course->id) }}" class="view-link">View Details →</a>
                         </div>
-                    @endif
+                    @endforeach
                 </div>
-            </div>
+            @endif
         </div>
     </div>
 </x-app-layout>
