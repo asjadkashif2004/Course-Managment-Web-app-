@@ -1,4 +1,6 @@
-<x-app-layout>
+@extends('layouts.app')
+
+@section('content')
     <style>
         .form-card {
             max-width: 600px;
@@ -96,4 +98,4 @@
             </form>
         </div>
     </div>
-</x-app-layout>
+@endsection

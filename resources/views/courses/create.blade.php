@@ -1,5 +1,12 @@
-<x-app-layout>
-   
+@extends('layouts.app')
+
+@section('header')
+    <h2 class="dashboard-title">
+        {{ __('Add New Course') }}
+    </h2>
+@endsection
+
+@section('content')
     <style>
         .form-card {
             max-width: 600px;
@@ -26,7 +33,7 @@
             background-color: #0b5ed7;
         }
 
-        .back-btn{
+        .back-btn {
             background-color: #0d6efd;
             color: #fff;
             font-weight: 600;
@@ -51,12 +58,12 @@
                 @csrf
 
                 <div class="mb-3">
-                    <label for="title" class="form-label"><b>Course Title</b>   </label>
+                    <label for="title" class="form-label"><b>Course Title</b></label>
                     <input type="text" name="title" id="title" class="form-control" required>
                 </div>
 
                 <div class="mb-3">
-                    <label for="price" class="form-label"> <b> Price (Rs) </b></label>
+                    <label for="price" class="form-label"><b>Price (Rs)</b></label>
                     <input type="number" name="price" id="price" class="form-control" required>
                 </div>
 
@@ -66,9 +73,8 @@
                 </div>
 
                 <button type="submit" class="btn btn-custom">➕ Add</button>
-                <!-- Back Button -->
                 <a href="{{ route('courses.index') }}" class="btn back-btn">Back to Courses</a>
             </form>
         </div>
     </div>
-</x-app-layout>
+@endsection

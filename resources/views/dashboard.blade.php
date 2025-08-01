@@ -1,10 +1,12 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="dashboard-title">
-            {{ __('Dashboard') }}
-        </h2>
-    </x-slot>
+@extends('layouts.app')
 
+@section('header')
+    <h2 class="dashboard-title">
+        {{ __('Dashboard') }}
+    </h2>
+@endsection
+
+@section('content')
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -137,4 +139,4 @@
             @endif
         </div>
     </div>
-</x-app-layout>
+@endsection

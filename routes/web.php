@@ -6,6 +6,7 @@ use App\Http\Controllers\CourseController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\FrontController;
+use App\Http\Controllers\NoteController;
 use App\Models\Course;
 
 // ========== Public Frontend Routes ==========
@@ -46,6 +47,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/courses', [CourseController::class, 'index'])->name('courses.index');
     Route::get('/courses/{course}', [CourseController::class, 'show'])->name('courses.show');
 });
+
+// ========== Student Access the notes functionality ==========
+Route::middleware(['auth'])->group(function () {
+     Route::resource('notes', NoteController::class);
+
+});
+
+Route::get('/notes/{id}/download', [NoteController::class, 'download'])->name('notes.download');
 
 // ========== Auth Routes ==========
 require __DIR__.'/auth.php';

@@ -150,6 +150,7 @@
         <div class="navbar-links">
             <a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">🏠 Dashboard</a>
             <a href="{{ route('courses.index') }}" class="{{ request()->routeIs('courses.index') ? 'active' : '' }}">📚 Courses</a>
+        <a href="{{ route('notes.index') }}" class="{{ request()->routeIs('notes.index') ? 'active' : '' }}">📝 Notes</a>
         </div>
 
         <!-- User Dropdown -->
