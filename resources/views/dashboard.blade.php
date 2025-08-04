@@ -110,10 +110,12 @@
             <a href="{{ url('/dashboard') }}">🏠 Dashboard</a>
             <a href="{{ url('/courses') }}">📚 Courses</a>
             <a href="#">📝 Enrollments</a>
+            <a href="{{ url('/notes') }}">🗒️ Notes</a>
             <a href="{{ route('logout') }}"
                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                 🚪 Logout
             </a>
+
             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                 @csrf
             </form>

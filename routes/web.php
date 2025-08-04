@@ -54,7 +54,7 @@ Route::middleware(['auth'])->group(function () {
 
 });
 
-Route::get('/notes/{id}/download', [NoteController::class, 'download'])->name('notes.download');
+Route::get('/notes/download/{id}', [NoteController::class, 'download'])->name('notes.download');
 
 // ========== Auth Routes ==========
 require __DIR__.'/auth.php';

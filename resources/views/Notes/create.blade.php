@@ -24,7 +24,7 @@
     <input type="text" name="title" class="form-control mb-3" placeholder="Title">
 
     <!-- Summernote textarea -->
-    <textarea id="summernote" name="body"></textarea>
+    <textarea id="summernote" name="content"></textarea>
 
     <button type="submit" class="btn btn-primary mt-3">Save Note</button>
 </form>

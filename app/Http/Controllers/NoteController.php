@@ -6,6 +6,11 @@ use Illuminate\Http\Request;
 use App\Models\Note;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Auth;
+use Barryvdh\DomPDF\Facade\Pdf; // Ensure you have this package installed
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class NoteController extends Controller
 {
@@ -83,7 +88,14 @@ class NoteController extends Controller
     {
       $note = Note::findOrFail($id);
     $pdf = Pdf::loadView('notes.pdf', compact('note'));
-    return $pdf->download($note->title . '.pdf');  
+    return $pdf->download($note->title . '.pdf');     
+    
+    /*    // Example of a simple PDF generation
+    $note = Note::findOrFail($id);
+        $pdf = Pdf::loadHTML('<h1>PDF Working Test</h1><p>If you see this, DomPDF is working.</p>');
+    return $pdf->download('test.pdf');
+    */
+    
     }
 
     private function authorizeAccess(Note $note)
